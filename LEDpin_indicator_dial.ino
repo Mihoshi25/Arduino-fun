@@ -4,12 +4,11 @@ int ledPin3 = 6;
 int ledPin4 = 8;
 int ledPin5 = 10;
 
-int speakerPin = 3;
+int tonePin = 3;
 
 int sensorPin = 0;
 int sensorValue = 0;
 
-byte volume = map (sensorValue, 0, 1024,0,125);
 
 void setup() {
   Serial.begin(9600);
@@ -19,64 +18,63 @@ void setup() {
   pinMode(ledPin4, OUTPUT);
   pinMode(ledPin5, OUTPUT);
 
-  pinMode(speakerPin, OUTPUT);
+  pinMode(tonePin, OUTPUT);
 }
 
 
 
 void loop() {
 
-//  midi();
+  midi();
   sensorValue= analogRead(sensorPin);
+
+  byte volume = map (sensorValue, 0, 1024,0,125);
+
+  analogWrite(3, volume);
     
   delay(1);
   
   if (sensorValue > 0 && sensorValue < 10){
+    digitalWrite(ledPin1, LOW);
+    digitalWrite(ledPin2, LOW);
+    digitalWrite(ledPin3, LOW);
+    digitalWrite(ledPin4, LOW);
+    digitalWrite(ledPin5, LOW);
+  } else if(sensorValue >= 10 && sensorValue < 200){
     digitalWrite(ledPin1, HIGH);
     digitalWrite(ledPin2, LOW);
     digitalWrite(ledPin3, LOW);
     digitalWrite(ledPin4, LOW);
     digitalWrite(ledPin5, LOW);
-  }/*
-  while(sensorValue >= 10 && sensorValue < 200){
-    digitalWrite(ledPin1, HIGH);
-    digitalWrite(ledPin2, LOW);
-    digitalWrite(ledPin3, LOW);
-    digitalWrite(ledPin4, LOW);
-    digitalWrite(ledPin5, LOW);
-  }
-  while (sensorValue >= 200 && sensorValue < 400){
+  }else if (sensorValue >= 200 && sensorValue < 400){
     digitalWrite(ledPin1, HIGH);
     digitalWrite(ledPin2, HIGH);
     digitalWrite(ledPin3, LOW);
     digitalWrite(ledPin4, LOW);
     digitalWrite(ledPin5, LOW);
-  }
-  while(sensorValue >= 400 && sensorValue < 600){
+  }else if(sensorValue >= 400 && sensorValue < 600){
     digitalWrite(ledPin1, HIGH);
     digitalWrite(ledPin2, HIGH);
     digitalWrite(ledPin3, HIGH);
     digitalWrite(ledPin4, LOW);
     digitalWrite(ledPin5, LOW);
-  }
-  while(sensorValue >= 600 && sensorValue < 800){
+  }else if(sensorValue >= 600 && sensorValue < 800){
     digitalWrite(ledPin1, HIGH);
     digitalWrite(ledPin2, HIGH);
     digitalWrite(ledPin3, HIGH);
     digitalWrite(ledPin4, HIGH);
     digitalWrite(ledPin5, LOW);
-  }
-  while(sensorValue >= 800){
+  }else if(sensorValue >= 800){
     digitalWrite(ledPin1, HIGH);
     digitalWrite(ledPin2, HIGH);
     digitalWrite(ledPin3, HIGH);
     digitalWrite(ledPin4, HIGH);
     digitalWrite(ledPin5, HIGH);
-  }*/
+  }
 //    midi();
 }
 
-/*midi(speakerPin, volume)
+ void midi()
 {
     tone(tonePin, 329, 225.0);
     delay(250.0);
@@ -692,4 +690,4 @@ void loop() {
     delay(125.0);
     tone(tonePin, 440, 675.0);
     delay(750.0);
-}*/
+}
